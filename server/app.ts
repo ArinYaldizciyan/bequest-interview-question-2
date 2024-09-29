@@ -1,7 +1,6 @@
 import express from "express";
 import cors from "cors";
 import { KEYUTIL, KJUR } from "jsrsasign";
-import bodyParser from "body-parser";
 
 const PORT = 8080;
 const app = express();

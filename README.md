@@ -1,18 +1,26 @@
-# Tamper Proof Data
+# Data Tampering and Recovery CRUD Application
 
-At Bequest, we require that important user data is tamper proof. Otherwise, our system can incorrectly distribute assets if our internal server or database is breached. 
+## Introduction
+This project addresses data tampering and data recovery issues in a CRUD web application by implementing solutions in both the frontend and backend. The application ensures that data integrity is maintained by using cryptographic methods to detect any unauthorized changes. Additionally, a WORM (Write Once, Read Many) datastore is used for data recovery, allowing the backend to restore the last known valid state if tampering is detected.
 
-**1. How does the client ensure that their data has not been tampered with?**
-<br />
-**2. If the data has been tampered with, how can the client recover the lost data?**
+## Installation Instructions
+1. Clone the repository and navigate to the project root.
+2. Navigate to both the `/client` and `/server` directories and install the dependencies:
+   ```bash
+   cd client
+   npm install
 
+   cd ../server
+   npm install
+   ```
+3. Start the frontend and backend servers:
+   ```bash
+   cd client
+   npm run start
 
-Edit this repo to answer these two questions using any technologies you'd like, there any many possible solutions. Feel free to add comments.
+   cd ../server
+   npm run start
+   ```
 
-### To run the apps:
-```npm run start``` in both the frontend and backend
-
-## To make a submission:
-1. Clone the repo
-2. Make a PR with your changes in your repo
-3. Email your github repository to robert@bequest.finance
+## Documentation
+For a detailed explanation of the project’s design and technical specifications, refer to the [documentation folder](/docs).
