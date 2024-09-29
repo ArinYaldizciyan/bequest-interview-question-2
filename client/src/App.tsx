@@ -1,20 +1,35 @@
 import React, { useEffect, useState } from "react";
+import { KJUR, KEYUTIL } from "jsrsasign";
 
 const API_URL = "http://localhost:8080";
 
-function App() {
-  const [data, setData] = useState<string>();
+interface FetchDataObject {
+  data: string;
+  signature: string;
+  publicKey: string;
+}
+
+const App = () => {
+  const [data, setData] = useState<string>("");
+  const [publicKey, setPublicKey] = useState<string>("");
+  const [signature, setSignature] = useState<string>("");
 
   useEffect(() => {
     getData();
   }, []);
 
+  // Fetch data from the server
   const getData = async () => {
     const response = await fetch(API_URL);
-    const { data } = await response.json();
-    setData(data);
+    const body: FetchDataObject = await response.json();
+    setData(body.data);
+    setSignature(body.signature);
+    setPublicKey(body.publicKey);
+
+    console.log("Updating signature", body);
   };
 
+  // Update data on the server
   const updateData = async () => {
     await fetch(API_URL, {
       method: "POST",
@@ -28,8 +43,25 @@ function App() {
     await getData();
   };
 
-  const verifyData = async () => {
-    throw new Error("Not implemented");
+
+  const verifyData = () => {
+    try {
+      const sig = new KJUR.crypto.Signature({ alg: "SHA256withRSA" });
+      sig.init(publicKey);
+      sig.updateString(data);
+
+      //Verify signature
+      const isValid = sig.verify(signature);
+
+      if (isValid) {
+        alert("Data is validated and has not been tampered with.");
+      } else {
+        alert("Data is invalid or has been tampered with.");
+      }
+    } catch (error) {
+      console.error(error);
+      alert("Cryptographic verification failed. Please check the public key and signature.");
+    }
   };
 
   return (
@@ -65,6 +97,6 @@ function App() {
       </div>
     </div>
   );
-}
+};
 
 export default App;
